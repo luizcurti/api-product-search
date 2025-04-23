@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productidsearch-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: productidsearch
+  template:
+    metadata:
+      labels:
+        app: productidsearch
+    spec:
+      containers:
+        - name: productidsearch
+          image: luizcurti/productidsearch:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://host.docker.internal:27017/product"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productidsearch-service
+spec:
+  selector:
+    app: productidsearch
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000

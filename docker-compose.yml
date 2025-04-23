@@ -1,0 +1,57 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      system-network:
+        ipv4_address: 15.10.0.10 
+    restart: always
+    volumes:
+      - mongo-data:/data/db 
+      - ./mongod.conf:/etc/mongod.conf
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+
+  app:
+    build:
+      context: .
+    container_name: api-mongo
+    command: bash -c "npm run dev"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://192.168.49.1:27017/product
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/home/node/app
+    networks:
+      - system-network
+    restart: always
+
+  seed:
+    build:
+      context: .
+    container_name: mongo-seed
+    depends_on:
+      - mongo
+    networks:
+      - system-network
+    restart: "no"  
+    volumes:
+      - ./:/home/node/app
+    working_dir: /home/node/app
+    environment:
+      - MONGO_URI=mongodb://192.168.49.1:27017/product
+    entrypoint: ["npx", "ts-node", "src/database/seeds/seeds.ts"]
+
+volumes:
+  mongo-data:
+
+networks:
+  system-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 15.10.0.0/24
