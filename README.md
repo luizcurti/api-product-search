@@ -1,6 +1,6 @@
 # 📦 Product Stock Search API
 
-**productIdSearch** is a simple API for managing and searching Stock Keeping Unit (SKU) information. It allows users to search for specific products and retrieve a complete list of all registered items. This API is ideal for integration with inventory management systems, e-commerce platforms, or other logistics solutions.
+**Product Stock Search** is a simple API for managing and searching Stock Keeping Unit (SKU) information. It allows users to search for specific products and retrieve a complete list of all registered items. This API is ideal for integration with inventory management systems, e-commerce platforms, or other logistics solutions.
 
 ### ⚠️ Disclaimer
 
