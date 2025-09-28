@@ -21,7 +21,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://192.168.49.1:27017/product
+      - MONGO_URI=mongodb://mongo:27017/product
     ports:
       - "3000:3000"
     volumes:
@@ -43,7 +43,7 @@ services:
       - ./:/home/node/app
     working_dir: /home/node/app
     environment:
-      - MONGO_URI=mongodb://192.168.49.1:27017/product
+      - MONGO_URI=mongodb://mongo:27017/product
     entrypoint: ["npx", "ts-node", "src/database/seeds/seeds.ts"]
 
 volumes:
