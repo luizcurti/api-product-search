@@ -17,6 +17,7 @@
     "body-parser": "^2.2.0",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "joi": "^18.0.2",
     "mongoose": "^8.13.1",
     "routes": "^2.1.0"
   },

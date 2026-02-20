@@ -12,6 +12,12 @@ services:
       - mongo-data:/data/db 
       - ./mongod.conf:/etc/mongod.conf
     command: ["mongod", "--config", "/etc/mongod.conf"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   app:
     build:
@@ -19,13 +25,16 @@ services:
     container_name: api-mongo
     command: bash -c "npm run dev"
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     environment:
       - MONGO_URI=mongodb://mongo:27017/product
+      - APP_PORT=3000
     ports:
       - "3000:3000"
     volumes:
       - ./:/home/node/app
+      - /home/node/app/node_modules
     networks:
       - system-network
     restart: always
@@ -35,7 +44,8 @@ services:
       context: .
     container_name: mongo-seed
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - system-network
     restart: "no"  

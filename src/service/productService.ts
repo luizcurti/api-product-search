@@ -7,10 +7,7 @@ interface StockItem {
 }
 export async function getAllStockData(): Promise<Array<StockItem>> {
   const allStock = await Stock.find().select('productId stock');
-  if (!allStock || allStock.length === 0) {
-    throw new Error('Product not found');
-  }
-  return allStock;
+  return allStock ?? [];
 }
 
 export async function getStockData(productId: string): Promise<IStock> {

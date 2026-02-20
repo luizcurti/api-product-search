@@ -21,12 +21,13 @@ describe('Product Service', () => {
       expect(result).toEqual(mockStockData);
     });
 
-    it('should throw an error if no stock data found', async () => {
+    it('should return empty array if no stock data found', async () => {
       (Stock.find as jest.Mock).mockReturnValue({
         select: jest.fn().mockResolvedValue([]),
       });
 
-      await expect(getAllStockData()).rejects.toThrow('Product not found');
+      const result = await getAllStockData();
+      expect(result).toEqual([]);
     });
   });
 

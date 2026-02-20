@@ -31,12 +31,13 @@ describe('listAll', () => {
 
     (getAllStockData as jest.Mock).mockResolvedValue(mockStockItems);
 
+    const req = {} as Request;
     const res = {
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
     } as unknown as Response;
 
-    await listAll(res);
+    await listAll(req, res);
 
     expect(res.json).toHaveBeenCalledWith(mockStockItems);
   });
@@ -44,12 +45,13 @@ describe('listAll', () => {
   it('should return 500 if there is a database error', async () => {
     (getAllStockData as jest.Mock).mockRejectedValue(new Error('Database connection failed'));
 
+    const req = {} as Request;
     const res = {
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
     } as unknown as Response;
 
-    await listAll(res);
+    await listAll(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Database connection failed' });
@@ -58,12 +60,13 @@ describe('listAll', () => {
   it('should return 404 if no stock items are found', async () => {
     (getAllStockData as jest.Mock).mockResolvedValue([]);
 
+    const req = {} as Request;
     const res = {
       json: jest.fn(),
       status: jest.fn().mockReturnThis(),
     } as unknown as Response;
 
-    await listAll(res);
+    await listAll(req, res);
 
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ error: 'No items found in stock.' });

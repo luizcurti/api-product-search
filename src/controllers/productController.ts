@@ -23,7 +23,7 @@ interface ErrorResponse {
   error: string;
 }
 
-export const listAll = async (res: Response): Promise<Array<StockItem> | ErrorResponse> => {
+export const listAll = async (_req: Request, res: Response): Promise<Array<StockItem> | ErrorResponse> => {
   try {
     const allStock = await getAllStockData();
 
