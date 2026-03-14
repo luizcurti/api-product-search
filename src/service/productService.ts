@@ -10,12 +10,9 @@ export async function getAllStockData(): Promise<Array<StockItem>> {
   return allStock ?? [];
 }
 
-export async function getStockData(productId: string): Promise<IStock> {
+export async function getStockData(productId: string): Promise<IStock | null> {
   const stock = await Stock.findOne({ productId });
-  if (!stock) {
-    throw new Error('Product not found');
-  }
-  return stock;
+  return stock ?? null;
 }
 
 export async function getTransactionData(productId: string): Promise<ITransaction[]> {
